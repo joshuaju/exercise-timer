@@ -36,7 +36,6 @@ public class ExerciseView extends JFrame {
         getContentPane().add(panel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
 

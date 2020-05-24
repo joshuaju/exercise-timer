@@ -11,6 +11,7 @@
     <modules>
         <module>attendee-client</module>
         <module>trainer-client</module>
+        <module>exercise-store</module>
     </modules>
 
     <build>
