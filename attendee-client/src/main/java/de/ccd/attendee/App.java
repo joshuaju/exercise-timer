@@ -5,6 +5,7 @@ import de.ccd.attendee.data.Exercise;
 import de.ccd.attendee.ui.ExerciseView;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.http.entity.StringEntity;
 
 import java.util.function.Consumer;
 
@@ -15,16 +16,19 @@ public class App {
     private final ExerciseView exerciseView = new ExerciseView();
 
     public void attendExercise(String username, String exerciseID) {
-        exerciseStore.join(username, exerciseID);
-        var exercise = exerciseStore.get(exerciseID);
-
+        var exercise = joinExercise(username, exerciseID);
         showExercise(username, exercise);
         observeExercise(exercise, exerciseView::display, App::exit);
     }
 
+    public Exercise joinExercise(String username, String exerciseId) {
+        exerciseStore.join(username, exerciseId);
+        return exerciseStore.get(exerciseId);
+    }
+
     @SneakyThrows
     public void showExercise(String username, Exercise exercise) {
-        exerciseView.setOnSubmit(() -> exerciseStore.submit(username, exercise.getId()));
+        exerciseView.setOnSubmit(() -> exerciseStore.complete(username, exercise.getId()));
         exerciseView.display(exercise);
     }
 
@@ -33,11 +37,10 @@ public class App {
         new Thread(() -> {
             while (true) {
                 var updated = exerciseStore.get(exercise.getId());
-                if (updated.isOver()) break;
+                if (updated.isFinished()) break;
                 else onUpdated.accept(updated);
                 sleep();
             }
-
             onFinished.run();
         }).start();
     }

@@ -18,20 +18,14 @@ public class App {
 
     public void superviseExercise(String title, Duration duration) {
         var exercise = exerciseStore.startExercise(title, duration);
-        startCountdown(exercise);
-        observeExercise(exercise, updated -> allSubmitted(updated,
-                () -> endExercise(exercise),
-                () -> exerciseView.display(exercise)));
+        observeExercise(exercise, updated -> {
+            if (updated.isFinished()){
+                endExercise(updated);
+            } else {
+                exerciseView.display(updated);
+            }
+        });
         exerciseView.display(exercise);
-    }
-
-    public void startCountdown(Exercise exercise) {
-        new Thread(() -> {
-            System.out.println("Starting countdown" + exercise.getDuration().toMillis());
-            sleep(exercise.getDuration().toMillis());
-            System.out.println("Time up.");
-            endExercise(exercise);
-        }).start();
     }
 
     public void observeExercise(Exercise exercise, Consumer<Exercise> onUpdated) {
@@ -43,11 +37,6 @@ public class App {
                 sleep(500);
             }
         }).start();
-    }
-
-    public void allSubmitted(Exercise exercise, Runnable onAllSubmitted, Runnable onElse) {
-        System.out.println("All submitted? -> Always NO");
-        onElse.run(); // TODO
     }
 
     public static void endExercise(Exercise exercise) {

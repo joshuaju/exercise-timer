@@ -1,15 +1,21 @@
 package de.ccd.attendee.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class Exercise {
 
-    private final String id;
-    private final String title;
-    private final boolean Over;
-    private final Instant endTime;
+    private String id;
+    private String title;
+    private boolean finished;
+    private Instant endTime;
 
 }

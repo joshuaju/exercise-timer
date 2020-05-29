@@ -1,16 +1,27 @@
 package de.ccd.trainer.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class Exercise {
 
-    private final String id;
-    private final String title;
-    private final Duration duration;
-    private final Collection<Attendee> attendees;
+    private String id;
+    private String title;
+    private int duration;
+    private Instant startTime;
+    private Instant endTime;
+    private boolean finished;
+    private final Collection<Attendee> attendees = new ArrayList<>();
 
 }

@@ -1,11 +1,9 @@
 package de.ccd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ccd.dto.Attendee;
 import de.ccd.dto.Exercise;
+import de.ccd.util.Exchange;
 import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
-import io.undertow.util.StatusCodes;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -15,11 +13,13 @@ import java.util.UUID;
 
 public class ExerciseRoutes {
 
-    private static Map<String, Exercise> exerciseMap = new HashMap<>();
+    private static final Map<String, Exercise> exerciseMap = new HashMap<>();
 
     static {
         exerciseMap.put("a", Exercise.builder().id("a").title("foobar").build());
     }
+
+    private static int ID = 0;
 
     public static void start(HttpServerExchange exchange) {
         var body = Exchange.jsonBody(exchange);
@@ -28,13 +28,14 @@ public class ExerciseRoutes {
         var startTime = Instant.now();
 
         var exercise = Exercise.builder()
-                .id(UUID.randomUUID().toString())
+                .id("" + ID++)
                 .title(title)
-                .durationMinutes(duration)
+                .duration(duration)
                 .startTime(startTime).build();
         exerciseMap.put(exercise.getId(), exercise);
 
         Exchange.sendJson(exchange, exercise);
+        System.out.println("Started " + exercise.getId());
     }
 
     public static void get(HttpServerExchange exchange) {
@@ -57,6 +58,8 @@ public class ExerciseRoutes {
         exercise.add(attendee);
 
         Exchange.sendJson(exchange, attendee);
+
+        System.out.println("User " + username + " attends " + id);
     }
 
     public static void complete(HttpServerExchange exchange) {
@@ -72,9 +75,12 @@ public class ExerciseRoutes {
         var allCompleted = exercise.getAttendees().stream()
                 .map(Attendee::getFinishedTime)
                 .allMatch(Objects::nonNull);
+        exercise.setEndTime(Instant.now());
         exercise.setFinished(allCompleted);
 
         Exchange.sendJson(exchange, exercise);
+
+        System.out.println("User " + username + " completes " + id);
     }
 
 }
