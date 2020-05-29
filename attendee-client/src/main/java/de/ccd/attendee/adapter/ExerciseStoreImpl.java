@@ -1,10 +1,6 @@
 package de.ccd.attendee.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import de.ccd.AttendeeDTO;
-import de.ccd.ExerciseDTO;
 import de.ccd.attendee.data.Exercise;
 import lombok.SneakyThrows;
 import org.apache.http.client.methods.HttpGet;

@@ -1,20 +1,19 @@
-package de.ccd;
+package de.ccd.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 
+@Builder
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
-public class AttendeeDTO {
+public class Attendee {
 
-    @NonNull
     private String name;
-    @NonNull
     private Instant joinedTime;
     private Instant finishedTime;
 
