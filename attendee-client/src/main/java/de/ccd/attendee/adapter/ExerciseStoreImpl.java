@@ -35,7 +35,7 @@ public class ExerciseStoreImpl implements ExerciseStore {
     @SneakyThrows
     public void complete(String username, String exerciseID) {
         var client = HttpClients.createDefault();
-        var request = new HttpPost(String.format(base + "/exercises/%s/attendee/%s/completion", exerciseID, username));
+        var request = new HttpPost(String.format(base + "/exercise/%s/attendee/%s/completion", exerciseID, username));
         client.execute(request);
     }
 

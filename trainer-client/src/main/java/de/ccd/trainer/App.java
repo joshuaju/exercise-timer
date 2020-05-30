@@ -31,7 +31,6 @@ public class App {
     public void observeExercise(Exercise exercise, Consumer<Exercise> onUpdated) {
         new Thread(() -> {
             while (true) {
-                System.out.println("Updating exercise");
                 var updated = exerciseStore.get(exercise.getId());
                 onUpdated.accept(updated);
                 sleep(500);
