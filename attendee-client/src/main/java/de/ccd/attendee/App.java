@@ -5,7 +5,6 @@ import de.ccd.attendee.data.Exercise;
 import de.ccd.attendee.ui.ExerciseView;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.http.entity.StringEntity;
 
 import java.util.function.Consumer;
 
@@ -13,7 +12,7 @@ import java.util.function.Consumer;
 public class App {
 
     private final ExerciseStore exerciseStore;
-    private final ExerciseView exerciseView = new ExerciseView();
+    private final ExerciseView exerciseView;
 
     public void attendExercise(String username, String exerciseID) {
         var exercise = joinExercise(username, exerciseID);

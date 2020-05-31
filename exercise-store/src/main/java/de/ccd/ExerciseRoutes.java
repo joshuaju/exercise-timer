@@ -58,7 +58,6 @@ public class ExerciseRoutes {
         exercise.add(attendee);
 
         Exchange.sendJson(exchange, attendee);
-
         System.out.println("User " + username + " attends " + id);
     }
 
@@ -75,11 +74,13 @@ public class ExerciseRoutes {
         var allCompleted = exercise.getAttendees().stream()
                 .map(Attendee::getFinishedTime)
                 .allMatch(Objects::nonNull);
-        exercise.setEndTime(Instant.now());
+
+        if (allCompleted) {
+            exercise.setEndTime(Instant.now());
+        }
         exercise.setFinished(allCompleted);
 
         Exchange.sendJson(exchange, exercise);
-
         System.out.println("User " + username + " completes " + id);
     }
 

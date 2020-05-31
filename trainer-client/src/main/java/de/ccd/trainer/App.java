@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.time.Duration;
-import java.util.Timer;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor
@@ -18,24 +17,16 @@ public class App {
 
     public void superviseExercise(String title, Duration duration) {
         var exercise = exerciseStore.startExercise(title, duration);
-        observeExercise(exercise, updated -> {
-            if (updated.isFinished()){
-                endExercise(updated);
-            } else {
-                exerciseView.display(updated);
-            }
-        });
         exerciseView.display(exercise);
+        observeExercise(exercise, this::refresh);
     }
 
-    public void observeExercise(Exercise exercise, Consumer<Exercise> onUpdated) {
-        new Thread(() -> {
-            while (true) {
-                var updated = exerciseStore.get(exercise.getId());
-                onUpdated.accept(updated);
-                sleep(500);
-            }
-        }).start();
+    public void refresh(Exercise updated) {
+        if (updated.isFinished()){
+            endExercise(updated);
+        } else {
+            exerciseView.display(updated);
+        }
     }
 
     public static void endExercise(Exercise exercise) {
@@ -45,12 +36,22 @@ public class App {
         App.exit();
     }
 
+    private void observeExercise(Exercise exercise, Consumer<Exercise> onUpdated) {
+        new Thread(() -> {
+            while (true) {
+                var updated = exerciseStore.get(exercise.getId());
+                onUpdated.accept(updated);
+                sleep(500);
+            }
+        }).start();
+    }
+
     private static void exit() {
         System.exit(0);
     }
 
     @SneakyThrows
-    public static void sleep(long millis) {
+    private static void sleep(long millis) {
         Thread.sleep(millis);
     }
 }

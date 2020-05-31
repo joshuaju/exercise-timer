@@ -1,19 +1,17 @@
 package de.ccd.attendee.ui;
 
 import de.ccd.attendee.data.Exercise;
-import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 
 
-@Getter
 public class ExerciseView extends JFrame {
 
     private final JLabel lblID;
     private final JLabel lblTitle;
     private final JLabel lblEnding;
-    private JButton btnSubmit;
+    private final JButton btnSubmit;
 
     public ExerciseView() {
         super("Attendee");
